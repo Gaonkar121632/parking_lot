@@ -1,37 +1,39 @@
 #!/usr/bin/env node
 
 const prompt = require('prompt');
-const { leave, park, createParkingLot, getRegIdByColor, getSlotByColor, getSlotByRegNumber,status } = require('./controller');
+const { leave, park, createParkingLot, getRegIdByColor, getSlotByColor, getSlotByRegNumber, status } = require('./controller');
 
 
 
 function execCommand(command) {
     let splitCmd = command.split(' ');
+    let result = ''
     switch (splitCmd[0]) {
         case "create_parking_lot":
-            createParkingLot(splitCmd[1])
+            result = createParkingLot(splitCmd[1])
             break;
         case "park":
-            park(splitCmd[1], splitCmd[2])
+            result = park(splitCmd[1], splitCmd[2])
             break;
         case "leave":
-            leave(splitCmd[1])
+            result = leave(splitCmd[1])
             break;
         case "registration_numbers_for_cars_with_colour":
-            getRegIdByColor(splitCmd[1]);
+            result = getRegIdByColor(splitCmd[1]);
             break;
         case "slot_numbers_for_cars_with_colour":
-            getSlotByColor(splitCmd[1])
+            result = getSlotByColor(splitCmd[1])
             break;
         case "slot_number_for_registration_number":
-            getSlotByRegNumber(splitCmd[1])
+            result = getSlotByRegNumber(splitCmd[1])
             break;
         case "status":
-            status();
+            result = status();
             break;
         default:
             break;
     }
+    console.log(result);
 }
 function askForCommand() {
     prompt.start();
@@ -47,15 +49,15 @@ function askForCommand() {
         }
     });
 }
-if(process.argv.length>2){
+if (process.argv.length > 2) {
     var lineReader = require('readline').createInterface({
         input: require('fs').createReadStream(process.argv[2])
-      });
-      
-      lineReader.on('line', function (line) {
+    });
+
+    lineReader.on('line', function (line) {
         execCommand(line)
-      });
-}else{
+    });
+} else {
     askForCommand()
 }
 

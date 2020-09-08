@@ -8,7 +8,7 @@ var unAllocated=[]
 module.exports.createParkingLot=(count)=>{
     totalSlots=Number(count)
     unAllocated=[...Array(totalSlots).keys()]
-    console.log(`Created a parking lot with ${count} slot`);
+    return `Created a parking lot with ${count} slot`;
 }
 
 module.exports.park=(regNo,color)=>{
@@ -16,9 +16,9 @@ module.exports.park=(regNo,color)=>{
         let slot=unAllocated.shift();
         allcatedSlots[slot]=[slot,regNo,color];
         insertIntoColorHash(regNo,color,slot);
-        console.log(`Allocated slot Number ${slot+1}`);
+        return `Allocated slot Number ${slot+1}`
     }else{
-        console.log("No Slots available");
+        return "No Slots available"
     }
 
 }
@@ -27,31 +27,32 @@ module.exports.leave=(slot)=>{
     if (slot-1<totalSlots) {
         allcatedSlots[slot-1]=[]
         unAllocated.push(slot-1)
-        console.log(`${slot} is free`);
+        return `${slot} is free`
     }else{
-        console.log("slots not exist");
+        return "slots not exist"
     }
 }
 module.exports.status=()=>{
+    let tmp='slots\t Reg No\t\t Color\n'
     allcatedSlots.forEach(ele=>{
         if (ele.length) {
             ele[0]+=1
-            console.log(ele.join(" "));
+            tmp+=ele.join("\t") +'\n'
         }
     })
-    return
+    return tmp
 }
 
 module.exports.getRegIdByColor=(color)=>{
-    let result=colorTable[color].map(ele=>ele[0])
-    console.log(result.join(' '));
-    return 
+    let result=colorTable[color]||[]
+    result=result.map(ele=>ele[0])
+    return result.join(' ')
 }
 
 module.exports.getSlotByColor=(color)=>{
-    let result=colorTable[color].map(ele=>ele[1]+1)
-    console.log(result.join(' '));
-    return 
+    let result=colorTable[color]||[]
+    result=result.map(ele=>ele[1]+1)
+    return result.join(' ')
 }
 
 module.exports.getSlotByRegNumber=(regId)=>{
@@ -61,11 +62,10 @@ module.exports.getSlotByRegNumber=(regId)=>{
         }
     })
     if (slot) {
-        console.log(slot.join(' '));
+        return slot.join(' ')
     }else{
-        console.log("Not found");
+        return "Not found"
     }
-    return
 }
 
 
